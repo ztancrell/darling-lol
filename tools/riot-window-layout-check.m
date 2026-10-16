@@ -110,6 +110,23 @@ int main(void) {
             (unsigned long)viewport->sizeCallbacks, viewport->publishedSize.width,
             viewport->publishedSize.height, hooks);
         pass &= hooks;
+        // League flips coordinates with screens[0] and sizes its first
+        // window from the main screen, then its
+        // fullscreen window from the display of that zero-size, possibly
+        // off-screen window. XRandR's disconnected outputs are empty screens;
+        // neither lookup may land on one or on nil (display 0, a 0x0 window).
+        NSRect screenFrame = [[NSScreen mainScreen] frame];
+        BOOL zeroSize = !NSIsEmptyRect(screenFrame) &&
+            !NSIsEmptyRect([[[NSScreen screens] objectAtIndex:0] frame]);
+        NSRect probes[] = { NSMakeRect(NSMidX(screenFrame), NSMidY(screenFrame), 0, 0), NSMakeRect(-50000, -50000, 0, 0) };
+        for (int i = 0; i < 2; i++) {
+            NSWindow *empty = [[NSWindow alloc] initWithContentRect:probes[i]
+                styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
+            zeroSize &= !NSIsEmptyRect([[empty screen] frame]);
+            [empty release];
+        }
+        printf("ZERO_SIZE_WINDOW_SCREEN main=%.0fx%.0f pass=%d\n", screenFrame.size.width, screenFrame.size.height, zeroSize);
+        pass &= zeroSize;
         [viewport release]; [host release];
         [overlay release];
         [content release]; [native release];

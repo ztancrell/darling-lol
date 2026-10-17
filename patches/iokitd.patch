@@ -690,10 +690,10 @@ index 0000000..38ad635
 +#endif
 diff --git a/src/IOPlatformExpertDevice.mm b/src/IOPlatformExpertDevice.mm
 new file mode 100644
-index 0000000..c091f62
+index 0000000..e330569
 --- /dev/null
 +++ b/src/IOPlatformExpertDevice.mm
-@@ -0,0 +1,92 @@
+@@ -0,0 +1,93 @@
 +#include "IOPlatformExpertDevice.h"
 +#import <Foundation/NSString.h>
 +#import <Foundation/NSData.h>
@@ -746,8 +746,9 @@ index 0000000..c091f62
 +	hash[8] = (hash[8] & 0x3f) | 0x80; // RFC 4122 variant
 +	uuid_string_t text;
 +	uuid_unparse_upper(hash, text);
-+	*uuid = [NSString stringWithUTF8String: text];
-+	*serial = [NSString stringWithFormat: @"DARLING-%02X%02X%02X%02X", hash[16], hash[17], hash[18], hash[19]];
++	// Owned (not autoreleased): the caller keeps them in statics for the daemon's lifetime
++	*uuid = [[NSString alloc] initWithUTF8String: text];
++	*serial = [[NSString alloc] initWithFormat: @"DARLING-%02X%02X%02X%02X", hash[16], hash[17], hash[18], hash[19]];
 +	return true;
 +}
 +

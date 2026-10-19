@@ -13,11 +13,15 @@
 > - don't use your main account.
 >
 > 3-Day Suspension ("UNSUPPORTED_THIRD_PARTY_TOOLS") DON'T USE IT RN
+>
 > Even with all of that, you will probably still get permabanned.
 >
 > **3. Takedown.** Riot may well shut this project down. If that happens, I will publish a fork of Darling containing only the changes made here (none of them breach anything), and release the small script as a gist or similar.
 >
 > **4. To Riot.** If you are reading this, it means a lot of people want to play your game on Linux and are disappointed that they currently can't. As with macOS for your other games (TFT, Valorant), it feels like Riot doesn't care about a part of its players who have been waiting the longest. If you want to fix this, make LoL Next compatible with Linux, either natively or through a layer like Proton. Yes, that includes your kernel anticheat: Epic Games did it with Easy Anti-Cheat. Follow the trend. This is the year of Linux, and people shouldn't be locked out of a platform or forced to dual boot for a single game.
+> Since Riot have heard of the repo if you want to contact me you can at darling-lolriot@proton.me (especially if you want to do an official or supported version of league of legends on linux)
+
+If someone else wants to contact me know that i'm open to jobs, part-time remote only as a employee and full time remote as a freelancer for a mission
 
 https://github.com/user-attachments/assets/140df3e0-3790-46b6-bab5-578139b84a7c
 
@@ -36,14 +40,41 @@ Game files, Riot installers, account databases, tokens, local prefixes, captures
 
 ## Requirements
 
-- x86-64 Linux **5.14 or newer**, an X11 session or Xwayland, and a working hardware Vulkan/OpenGL driver. AMD RADV has been exercised; other drivers are not validated. Hybrid laptops usually render on the integrated GPU unless started with PRIME offload; NVIDIA is not validated. See [hybrid graphics](docs/TROUBLESHOOTING.md#hybrid-graphics-laptops-amdintel-igpu--nvidia).
+- x86-64 Linux **5.14 or newer**, an X11 session or Xwayland, and a working hardware Vulkan/OpenGL driver. AMD RADV and the NVIDIA driver (proprietary and open kernel modules) have been exercised, see [NVIDIA](docs/TROUBLESHOOTING.md#nvidia); other drivers are not validated. Hybrid laptops usually render on the integrated GPU unless started with PRIME offload. See [hybrid graphics](docs/TROUBLESHOOTING.md#hybrid-graphics-laptops-amdintel-igpu--nvidia).
 - Git + Git LFS, Bash, curl, unzip, CMake, Make, Clang/LLD, LLVM development files, a C/C++ compiler, Python 3.12+ and the Darling build dependencies. The patch includes LLVM 22/23 branch-opcode compatibility; the new PC used LLVM/Clang 23. Node.js is needed only for the offline JavaScript checks.
 - X11/XCB/SHM development files for the current runtime helpers.
 - Enough free disk for Darling sources/build, Git LFS assets and the game: budget at least 50 GB. Building is substantially larger than this source-only repository.
 
 Use the dependency list in the [pinned Darling source](https://github.com/darlinghq/darling/tree/60ba801decee7a00782f74f6be4c8ffb013f79ff) for your distribution. `tools/env-check.sh` provides a starting check; its legacy package names may need adapting to your distro.
 
-## Build on the other PC
+## Experimental Nix/rootless package
+
+```sh
+nix run github:lucannez64/darling-lol#installer
+nix run github:lucannez64/darling-lol#default -- --update
+nix run github:lucannez64/darling-lol#default
+nix run github:lucannez64/darling-lol#shell
+```
+
+Or from a local checkout:
+
+```sh
+nix run .#installer
+nix run .#default
+```
+
+Nix supplies the launcher/dependencies, not a prebuilt Darling or game. First
+setup is interactive and builds into the writable per-user workspace. The
+desktop entry requests a terminal; EOF stdin produces an actionable error.
+Run updates only after manually closing the clients and shutting Darling down
+in the original namespace. A live prefix marker blocks a second launch rather
+than killing or attempting to reconnect. One workspace/foreground namespace is
+supported at a time. Readiness is per canonical prefix, configured guest and
+compatible package/runtime/source identity. Store closure roots are retained
+for mutable binaries; do not delete `build/nix-gcroots/` while using them.
+See [Nix setup and operational limits](docs/SETUP.md#nixos-package).
+
+## Build on the other PC (non-Nix)
 
 ```sh
 git clone https://github.com/lucannez64/darling-lol.git

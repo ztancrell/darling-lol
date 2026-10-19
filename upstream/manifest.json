@@ -8,7 +8,7 @@
       "revision": "60ba801decee7a00782f74f6be4c8ffb013f79ff",
       "repository": "https://github.com/darlinghq/darling.git",
       "patch": "patches/darling.patch",
-      "modified_files": 88,
+      "modified_files": 89,
       "new_files": [
         "src/CoreAudio/CoreAudio/AudioConverterShim.c",
         "src/CoreAudio/AudioTrace.h",
@@ -57,7 +57,7 @@
       "revision": "c8d38d16a9f613d300157bebbab2b9501bc0c274",
       "repository": "https://github.com/darlinghq/darling-cocotron.git",
       "patch": "patches/cocotron.patch",
-      "modified_files": 104,
+      "modified_files": 115,
       "new_files": [
         "QuartzCore/include/QuartzCore/CATransformLayer.h",
         "AppKit/NSGeometryTrace.h"
@@ -245,8 +245,8 @@
         "include/Metal/MTLTrace.h",
         "private-include/Metal/MTLArgumentInternal.h",
         "private-include/Metal/MTLBlitCommandEncoderInternal.h",
-        "private-include/Metal/MTLDepthStencilInternal.h",
         "private-include/Metal/MTLDeviceInfo.h",
+        "private-include/Metal/MTLDepthStencilInternal.h",
         "private-include/Metal/MTLSamplerStateInternal.h",
         "private-include/Metal/MTLVertexDescriptorInternal.h",
         "src/Metal/MTLArgument.mm",
@@ -274,7 +274,7 @@
       "revision": "fa29287aa2f0115271e091f1031f53c9e024005d",
       "repository": "https://github.com/darlinghq/darling-xnu.git",
       "patch": "patches/xnu.patch",
-      "modified_files": 64,
+      "modified_files": 65,
       "new_files": [
         "darling/src/libsystem_kernel/emulation/include/common/cpu_topology.h",
         "darling/src/libsystem_kernel/emulation/include/common/private_mutex.h",
@@ -307,7 +307,8 @@
         "private-include/indium/submission-batch.private.hpp",
         "private-include/indium/submit-batch.private.hpp",
         "private-include/indium/submit-thread.private.hpp",
-        "private-include/indium/waits.private.hpp"
+        "private-include/indium/waits.private.hpp",
+        "private-include/indium/completion-spin.private.hpp"
       ]
     },
     {
@@ -315,8 +316,13 @@
       "revision": "e7e3db881008d883f82914765a72ce842bcba735",
       "repository": "https://github.com/darlinghq/darling-cfnetwork.git",
       "patch": "patches/cfnetwork.patch",
-      "modified_files": 1,
+      "modified_files": 4,
       "new_files": []
+    },
+    {
+      "path": "src/external/cctools-port",
+      "revision": "d9456c221e1f462e17c0b3297748bc089d5a861e",
+      "patch": "patches/cctools-port.patch"
     }
   ],
   "omitted": [
